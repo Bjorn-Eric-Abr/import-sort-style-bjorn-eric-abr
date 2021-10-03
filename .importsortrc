@@ -1,6 +1,6 @@
 {
-  ".js": {
-    "parser": "babylon",
-    "style": "bjorn-eric-abr"
-  }
+	".js, .jsx, .es6, .es, .mjs, .ts, .tsx": {
+		"parser": "babylon",
+		"style": "bjorn-eric-abr"
+	}
 }
