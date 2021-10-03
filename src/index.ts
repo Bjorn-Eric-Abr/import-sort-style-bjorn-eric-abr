@@ -15,7 +15,6 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 		dotSegmentCount,
 		hasOnlyDefaultMember,
 		hasOnlyNamedMembers,
-		hasOnlyNamespaceMember,
 		isInstalledModule,
 		isAbsoluteModule,
 		isRelativeModule,
@@ -34,8 +33,8 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 
 	function isReactModule(imported: IImport): boolean {
 		return Boolean(
-			imported.moduleName.match(
-				/^(react|react-dom|react-native|react-relay|relay-runtime|prop-types|redux)/,
+			/^(react|react-dom|react-native|react-relay|relay-runtime|prop-types|redux)/.exec(
+				imported.moduleName,
 			),
 		)
 	}
@@ -51,13 +50,15 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 	}
 
 	function isStylesModule(imported: IImport): boolean {
-		return Boolean(imported.moduleName.match(/\.(s?css|less)$/))
+		return Boolean(/\.(s?css|less)$/.exec(imported.moduleName))
 	}
 
 	function isImageModule(imported: IImport): boolean {
-		return Boolean(
-			imported.moduleName.match(/\.(svg|png|gif|jpg|jpeg|webp)$/),
-		)
+		return Boolean(/\.(svg|png|gif|jpg|jpeg|webp)$/.exec(imported.moduleName))
+	}
+
+	function isGraphqlModule(imported: IImport): boolean {
+		return Boolean(/\.(gql|graphql)$/.exec(imported.moduleName))
 	}
 
 	return [
@@ -88,7 +89,12 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 		// import … from "./foo";
 		// import … from "../foo";
 		{
-			match: and(isRelativeModule, not(isStylesModule), not(isImageModule)),
+			match: and(
+				isRelativeModule,
+				not(isStylesModule),
+				not(isImageModule),
+				not(isGraphqlModule),
+			),
 			sort: [dotSegmentCount, moduleName(naturally)],
 			sortNamedMembers: alias(unicode),
 		},
@@ -108,6 +114,15 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 			sort: [dotSegmentCount, moduleName(naturally)],
 			sortNamedMembers: alias(unicode),
 		},
+		{ separator: true },
+
+		// Graphql
+		{
+			match: isGraphqlModule,
+			sort: [dotSegmentCount, moduleName(naturally)],
+			sortNamedMembers: alias(unicode),
+		},
+		{ separator: true },
 		{ separator: true },
 	]
 }
