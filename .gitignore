@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+.DS_STORE
+
+*.iml
+lerna-debug.log
+yarn-error.log
+node_modules
+npm-debug.log
+packages/*/lib/
+
+lib
+
+!**/fixtures/node_modules/
