@@ -4,9 +4,19 @@ Björn-Eric's personal [renke/import-sort](https://github.com/renke/import-sort)
 
 ## Installation
 ```
-yarn add -D import-sort
+yarn add -D import-sort import-sort-style-bjorn-eric-abr
 ```
-or
+and optinally
 ```
 yarn add -D import-sort import-sort-cli
+```
+
+Then copy this to your `.importsortrc`:
+```
+{
+	".js, .jsx, .es6, .es, .mjs, .ts, .tsx": {
+		"parser": "babylon",
+		"style": "bjorn-eric-abr"
+	}
+}
 ```
