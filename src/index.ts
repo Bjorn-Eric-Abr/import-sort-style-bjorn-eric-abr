@@ -50,6 +50,10 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 		return Boolean(/\.(gql|graphql)$/.exec(imported.moduleName))
 	}
 
+	function isFrameworkModule(imported: IImport): boolean {
+		return Boolean(/^(next|storyblok)/.exec(imported.moduleName))
+	}
+
 	return [
 		// import "foo"
 		{ match: and(hasNoMember, isAbsoluteModule) },
@@ -60,6 +64,12 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 			match: isReactModule,
 			sort: reactComparator,
 			sortNamedMembers: alias(unicode),
+		},
+		{ separator: true },
+
+		// framework modules like next.js or storyblok
+		{
+			match: isFrameworkModule,
 		},
 		{ separator: true },
 
