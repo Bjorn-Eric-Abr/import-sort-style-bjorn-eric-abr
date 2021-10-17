@@ -6,12 +6,12 @@ Björn-Eric's personal [renke/import-sort](https://github.com/renke/import-sort)
 ```
 yarn add -D import-sort import-sort-style-bjorn-eric-abr
 ```
-and optinally
+or optinally include the [CLI](https://github.com/renke/import-sort#command-line-import-sort-cli)
 ```
-yarn add -D import-sort import-sort-cli
+yarn add -D import-sort import-sort-cli import-sort-style-bjorn-eric-abr
 ```
 
-Then copy this to your `.importsortrc`:
+Then paste this in to your `.importsortrc`:
 ```
 {
 	".js, .jsx, .es6, .es, .mjs, .ts, .tsx": {
