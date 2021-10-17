@@ -54,6 +54,12 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 		return Boolean(/^(next|storyblok)/.exec(imported.moduleName))
 	}
 
+	function isAbsolutePathImport(imported: IImport): boolean {
+		return Boolean(
+			/^@(components|lib|styles|assets)/.exec(imported.moduleName),
+		)
+	}
+
 	return [
 		// import "foo"
 		{ match: and(hasNoMember, isAbsoluteModule) },
@@ -83,14 +89,18 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
 
 		// import uniq from 'lodash/uniq';
 		{
-			match: isInstalledModule(__filename),
+			match: and(isInstalledModule(__filename), not(isScopedModule)),
 			sort: moduleName(naturally),
 			sortNamedMembers: alias(unicode),
 		},
 		{ separator: true },
 
 		// import xxx from '@something/else'
-		{ match: isScopedModule },
+		{ match: and(isScopedModule, not(isAbsolutePathImport)) },
+		{ separator: true },
+
+		// Absolute path imports
+		{ match: isAbsoluteModule },
 		{ separator: true },
 
 		// import … from "./foo";
